@@ -33,7 +33,7 @@
 
  <script src="https://www.youtube.com/player_api" type="text/javascript"></script>
  
-<script type="text/javascript" src="<?=Site::$root?>/assets/js/YouTube.js"></script>
+<script type="text/javascript" src="<?=Site::$root?>/assets/js/YtPlayer.js"></script>
 <?/*<script type="text/javascript" src="<?=Site::$root?>/assets/js/EmbedPlayer.js"></script>*/?>
 
 <script type="text/javascript" src="<?=Site::$root?>/assets/js/Main.js"></script>
