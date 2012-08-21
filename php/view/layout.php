@@ -7,6 +7,8 @@
     <link href="<?=Site::$root?>/assets/lib/google-code-prettify/src/prettify.css" type="text/css" rel="stylesheet" />
     <link type="text/css" rel="stylesheet" href="<?=Site::$root?>/assets/lib/bootstrap/css/bootstrap.css"/>
     <link type="text/css" rel="stylesheet" href="<?=Site::$root?>/assets/test.css"/>
+    <link type="text/css" rel="stylesheet" href="<?=Site::$root?>/assets/player-controler.css"/>
+    <link type="text/css" rel="stylesheet" href="<?=Site::$root?>/assets/lib/more-icons/gentleface-16-16.css"/>
     <link href='http://fonts.googleapis.com/css?family=Rokkitt:400,700' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="<?=Site::$root?>/assets/lib/jquery-1.7.2.js"></script>
     

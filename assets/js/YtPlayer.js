@@ -1,13 +1,22 @@
 
-var YtPlayer=function(jqContainer,YtId,w,h,disableAutoPlay){
+var YtPlayer=function(jqContainer,YtId,w,h,disableAutoPlay,showcontrols,showinfo,muted){
     
     var autoplay=disableAutoPlay?0:1;
+    var controls=showcontrols?1:0;
+    var showinfo =showinfo ?1:0;
+
     
     
     var me=this;
     
     this.player=null;
     
+    this.mute=function(){
+        me.player.mute();
+    }
+    this.unMute=function(){
+        me.player.unMute();
+    }
     this.getPosition=function(){
         return me.player.getCurrentTime();
     }
@@ -58,7 +67,7 @@ var YtPlayer=function(jqContainer,YtId,w,h,disableAutoPlay){
         if (typeof newQuality == 'object' && newQuality['data']) {
             newQuality = newQuality['data'];
         }
-        console.log('onPlaybackQualityChange event: ' + 'Playback quality changed to "' + newQuality + '"');
+        //console.log('onPlaybackQualityChange event: ' + 'Playback quality changed to "' + newQuality + '"');
     }
     
 
@@ -74,7 +83,7 @@ var YtPlayer=function(jqContainer,YtId,w,h,disableAutoPlay){
         if (typeof newRate == 'object' && newRate['data']) {
             newRate = newRate['data'];
         }
-        console.log('onPlaybackRateChange event: ' + 'Playback rate changed to "' + newRate + '"');
+        //console.log('onPlaybackRateChange event: ' + 'Playback rate changed to "' + newRate + '"');
     }
 
 
@@ -93,13 +102,16 @@ var YtPlayer=function(jqContainer,YtId,w,h,disableAutoPlay){
             var html5Player = event.target;
             if (html5Player /*&& playerVersion == 'html5'*/) {
                 me.player = html5Player;
-                
+
                 // Ensure that a video is cued if using chromeless player.
                 //if (vid && playerType == 'chromeless') {
                     //cueVideo(vid, 0);
                 //}
                 me.onReady();
                 setInterval(updateInfos, 600);
+                if(muted){
+                    me.mute();
+                }
                 //addInformation();
                 //updateytplayerInfo();
             }
@@ -118,9 +130,9 @@ var YtPlayer=function(jqContainer,YtId,w,h,disableAutoPlay){
         if (typeof newState == 'object' && newState['data']) {
             newState = newState['data'];
         }
-        console.log('onStateChange event: Player state changed to: "' /*+ '" (' + getPlayerState(newState) + ')'*/);
+        /*console.log('onStateChange event: Player state changed to: ";
         console.log(newState);
-        console.log(me.getPlayerState());
+        console.log(me.getPlayerState());*/
             //updateHTML('playerstate', newState);
     }
     /**
@@ -132,19 +144,19 @@ var YtPlayer=function(jqContainer,YtId,w,h,disableAutoPlay){
         var playerState = me.player.getPlayerState();
         switch (playerState) {
         case 5:
-            return 'video cued';
+            return YtPlayer.Status.VIDEO_CUED;
         case 3:
-            return 'buffering';
+            return YtPlayer.Status.BUFFERING;
         case 2:
-            return 'paused';
+            return YtPlayer.Status.PAUSED;
         case 1:
-            return 'playing';
+            return YtPlayer.Status.PLAYING;
         case 0:
-            return 'ended';
+            return YtPlayer.Status.ENDED;
         case -1:
-            return 'unstarted';
+            return YtPlayer.Status.UNSTARTED;
         default:
-            return 'Status uncertain';
+            return YtPlayer.Status.STATUS_UNCERTAIN;
         }
         
     }
@@ -155,13 +167,14 @@ var YtPlayer=function(jqContainer,YtId,w,h,disableAutoPlay){
         var infos={
             duration:me.getDuration(),
             position:me.getPosition(),
-            state:me.getPlayerState()
+            state:me.getPlayerState(),
+            muted:me.isMuted=me.player.isMuted()
         }
-        console.log(me.getPlayerState());
-        dispatchEvent("onChange",infos);
+        //console.log(me.getPlayerState());
+        dispatchEvent(YtPlayer.Events.CHANGE,infos);
         
         if(infos.state=="ended"){
-            dispatchEvent("onVideoEnd",infos);
+            dispatchEvent(YtPlayer.Events.VIDEO_END,infos);
         }
     }
     
@@ -177,7 +190,9 @@ var YtPlayer=function(jqContainer,YtId,w,h,disableAutoPlay){
             videoId: YtId,
             
             playerVars: {
-              autoplay:autoplay  
+              autoplay:autoplay,  
+              showinfo:showinfo,  
+              controls:controls  
             },
             events: {
                 'onError': onPlayerError,
@@ -208,6 +223,21 @@ var YtPlayer=function(jqContainer,YtId,w,h,disableAutoPlay){
     
     build();
 }
+
+YtPlayer.Events={
+    CHANGE:"onChange",
+    VIDEO_END:"onVideoEnd"
+}
+YtPlayer.Status={
+    VIDEO_CUED:'video-cued',
+    BUFFERING:'buffering',
+    PAUSED:'paused',
+    PLAYING:'playing',
+    ENDED:'ended',
+    UNSTARTED:'unstarted',
+    STATUS_UNCERTAIN:'status-uncertain'
+}
+
 
 
 

@@ -6,7 +6,7 @@ var Main={
     init:function(){
        new ScrollHandler(Main.body);
        Prettify.doTheJob(Main.body); 
-       Main.body.find("[data-ui-next='true']").on("click",function(){Main.nextRandom();});
+       Main.body.find("[data-ui='next']").on("click",function(){Main.nextRandom();});
     },
     toDoAfterAjax:function(){
         
@@ -40,9 +40,9 @@ var Main={
        
        //play the video
        if(!Main.player){
-           Main.player=new YtPlayer($("#player"),videoId,"100%","100%");
+           Main.player=new YtPlayer($("#player"),videoId,"100%","100%",false,false,false,true);
            new PlayerControler(Main.player,$("#player-controler"));
-           Main.player.addEventListener("onVideoEnd",Main.nextRandom);
+           Main.player.addEventListener(YtPlayer.Events.VIDEO_END,Main.nextRandom);
        }else{
            Main.player.loadById(videoId);
        }
@@ -56,8 +56,6 @@ var Main={
 }
 Main.CTRL={
     EMBED_VDO:"[data-embed-vdo='true']",
-    PREV:"a[href='#Main.prevVideo']",
-    NEXT:"a[href='#Main.nextVideo']",
     VIDEO_DETAILS:"[data-ajax-receiver='moment-details']"
 
 }
@@ -65,14 +63,7 @@ $("body").on("click",Main.CTRL.EMBED_VDO,function(e){
     e.preventDefault();
     Main.loadVideo($(this));
 })
-$("body").on("click",Main.CTRL.PREV,function(e){
-    e.preventDefault();
-    Main.prevVideo();
-})
-$("body").on("click",Main.CTRL.NEXT,function(e){
-    e.preventDefault();
-    Main.nextVideo();
-})
+
 
 
 Main.init();
@@ -83,25 +74,38 @@ var PlayerControler=function(player,jq){
     
     var me=this;
     var jq=$(jq);
-    var progressBar=jq.find("[data-ui-progress='true']");
-    var progressBarContainer=jq.find("[data-ui-progress-container='true']");
+    var progressBar=jq.find("[data-ui='progress']");
+    var progressBarContainer=jq.find("[data-ui='progressContainer']");
     
-    var play=jq.find("[data-ui-play='true']");
-    var pause=jq.find("[data-ui-pause='true']");
+    var play=jq.find("[data-ui='play']");
+    var pause=jq.find("[data-ui='pause']");
+    var muteBtn=jq.find("[data-ui='mute']");
+    var unMuteBtn=jq.find("[data-ui='unMute']");
     
     
     player.onReady=function(){
         console.log("on ready");
         jq.css("display","block");
+        muteBtn.on("click",function(e){player.mute();})
+        unMuteBtn.on("click",function(e){player.unMute();})
     }
     
-    player.addEventListener("onChange",function(infos){
+    player.addEventListener(YtPlayer.Events.CHANGE,function(infos){
         //console.log(infos);
+        //update progress
         if(!mouseIsDown && infos.state!="butffering"){
             var zeroToOne=Utils.rapport(infos.position, infos.duration, 1, 0, 0);
-            
             setPos(zeroToOne);
         }
+        //add good css classes
+        for(s in YtPlayer.Status){
+           jq.removeClass(YtPlayer.Status[s]); 
+        }
+        jq.addClass(infos.state);
+        
+        jq.removeClass("muted"); 
+        jq.addClass(infos.muted ? "muted":"");
+        
     });
     
 

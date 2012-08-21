@@ -1,0 +1,50 @@
+[data-ui]{
+    cursor:pointer;
+}
+
+[data-ui='mute']{
+    display:block;
+}
+[data-ui='unMute']{
+    display:none;
+}
+.muted [data-ui='mute']{
+    display:none;
+} 
+.muted [data-ui='unMute']{
+    display:block;
+}
+
+[data-ui='play']{
+    display:block;
+}
+[data-ui='pause']{
+    display:none;
+}
+.playing [data-ui='play']{
+    display:none;  
+}
+.playing [data-ui='pause']{
+    display:block;  
+}
+.paused [data-ui='play']{
+    display:block;  
+}
+.paused [data-ui='pause']{
+    display:none;  
+}
+
+
+.ui-vdo-progress-container{
+    margin-top:4px;
+    background-color: #747068;
+    height:10px;
+}
+.ui-vdo-progress{
+    background-color: #AC0000;
+    height:100%;
+    width:0%;
+}
+.buffering .ui-vdo-progress{
+    background-color: #0f0;
+}

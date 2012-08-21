@@ -48,6 +48,7 @@ var ScrollHandler=function(jq){
         })
     }
     init();
+    me.onScroll();
 }
 
 ScrollHandler.HTML={
