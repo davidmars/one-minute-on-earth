@@ -14,8 +14,14 @@ class YTPlayList {
 
     public $total;
     private $current;
-    
-    const REFRESH_SECONDS=600;
+    /**
+     * the time cache for realy download an xml from youtube...
+     * well in fact, there is a random function also to prevent complete refresh.
+     */
+    const REFRESH_SECONDS=60;
+    /**
+     * the playlist to load by default 
+     */
     const PLAYLIST="01BCB0E07A3C606D";
 
     public static function getVideos($YTPlaylistId=null) {
@@ -31,7 +37,7 @@ class YTPlayList {
             $start = ($start) + ($perPage);
             $playlistUrl = "http://gdata.youtube.com/feeds/api/playlists/$YTPlaylistId?v=2&start-index=$start";
             //echo "<h1>".$playlistUrl."</h1>";
-            $xml = file_get_contents(FileCache::getFile($playlistUrl, self::REFRESH_SECONDS));
+            $xml = file_get_contents(FileCache::getFile($playlistUrl, rand(self::REFRESH_SECONDS, self::REFRESH_SECONDS*4)));
             $xml = simplexml_load_string($xml);
             
             //for the next iterator

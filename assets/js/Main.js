@@ -89,7 +89,11 @@ var PlayerControler=function(player,jq){
         muteBtn.on("click",function(e){player.mute();})
         unMuteBtn.on("click",function(e){player.unMute();})
     }
-    
+    Main.player.addEventListener(YtPlayer.Events.VIDEO_END,
+        function(){
+            setPos(0);
+        }
+    );
     player.addEventListener(YtPlayer.Events.CHANGE,function(infos){
         //console.log(infos);
         //update progress

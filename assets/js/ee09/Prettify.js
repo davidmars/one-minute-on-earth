@@ -8,9 +8,14 @@ var Prettify={
             if(!node.attr("data-prettyfied")){
                 node.attr("data-prettyfied","true");
                 var text=node.text();
-                text=vkbeautify.xml(text);
+                if(node.hasClass("lang-json")){
+                    text=vkbeautify.json(text);    
+                }else if(node.hasClass("lang-xml")){
+                    text=vkbeautify.xml(text);    
+                }
+                
                 node.text(text);
-                 prettyPrint();
+                prettyPrint();
             }
         }       
     }
