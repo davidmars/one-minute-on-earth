@@ -1,7 +1,20 @@
 <div class="row">
     <div class="span8">
+        
+        <h2 class="fs0">TO DO</h2>
+        
+        <ul>
+            <li>implement url and history js</li>
+            <li>php direct url access</li>
+            <li>submit youtube video form</li>
+            <li>display more details: formated address, google map link, tags...</li>
+            <li>mobile device optimization</li>
+            <li>tablet device optimization</li>
+            <li>the screensaver</li>
+        </ul>
+        
         <h2 class="fs0">Nous vivons une époque formidable!</h2>
-
+        
         <p>
             One Minute On Earth est un recueil de moments passés sur Terre. 
             Ces moments illustrés au moyen de petites vidéos sont juste là pour dire "à cet endroit, ce jour là, ça ressemblait à ça". 

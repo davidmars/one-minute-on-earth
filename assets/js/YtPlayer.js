@@ -8,36 +8,70 @@ var YtPlayer=function(jqContainer,YtId,w,h,disableAutoPlay,showcontrols,showinfo
     
     
     var me=this;
+
+    /**
+     * will dispatch events
+     */
+    this.eventDispatcher=new EventDispatcher();
     
+    /**
+     * the youtUbe player object from YT Api
+     */
     this.player=null;
-    
+    /**
+     * sound will be tuned off
+     */
     this.mute=function(){
         me.player.mute();
     }
+    /**
+     * sound will be tuned on
+     */
     this.unMute=function(){
         me.player.unMute();
     }
+    /**
+     * return the current time code in seconds
+     */
     this.getPosition=function(){
         return me.player.getCurrentTime();
     }
+    /**
+     * return the video duration in seconds
+     */
     this.getDuration=function(){
         return me.player.getDuration();
     }
+    /**
+     * pause the video
+     */
     this.pause=function(){
         me.player.pauseVideo();
     }
+     /**
+     * resume the video
+     */
     this.play=function(){
         me.player.playVideo();
     }
-    this.loadById=function(id){
-        me.player.loadVideoById(id, 0);
-    }
+    /**
+     * 
+     */
     this.seek=function(zeroToOne){
         zeroToOne=Math.min(1, zeroToOne);
         zeroToOne=Math.max(0, zeroToOne);
         var s=Utils.rapport(zeroToOne, 1, me.getDuration(), 0, 0)
         me.player.seekTo(s, true);
     }
+    /**
+     * load a video by youtube video id
+     * @param id String a youtube video id, something like "4zlWpG4N-Ko"
+     */
+    this.loadById=function(id){
+        me.player.loadVideoById(id, 0);
+        me.eventDispatcher.dispatchEvent(YtPlayer.Events.BEFORE_START,me);
+    }
+
     
 
 
@@ -52,9 +86,9 @@ var YtPlayer=function(jqContainer,YtId,w,h,disableAutoPlay,showcontrols,showinfo
         if (typeof errorCode == 'object' && errorCode['data']) {
             errorCode = errorCode['data'];
         }
-        console.log('Error: ' + errorCode);
+        //console.log('Error: ' + errorCode);
     }
-
+    
 
     /**
     * The 'onytplayerQualityChange' function executes when the
@@ -171,10 +205,10 @@ var YtPlayer=function(jqContainer,YtId,w,h,disableAutoPlay,showcontrols,showinfo
             muted:me.isMuted=me.player.isMuted()
         }
         //console.log(me.getPlayerState());
-        dispatchEvent(YtPlayer.Events.CHANGE,infos);
+        me.eventDispatcher.dispatchEvent(YtPlayer.Events.CHANGE,infos);
         
         if(infos.state=="ended"){
-            dispatchEvent(YtPlayer.Events.VIDEO_END,infos);
+            me.eventDispatcher.dispatchEvent(YtPlayer.Events.VIDEO_END,infos);
         }
     }
     
@@ -182,7 +216,8 @@ var YtPlayer=function(jqContainer,YtId,w,h,disableAutoPlay,showcontrols,showinfo
  
 
     var build=function(){
-        console.log("build player in"); 
+        me.eventDispatcher.dispatchEvent(YtPlayer.Events.BEFORE_START,me);
+        console.log("build YT player in..."); 
         console.log(jqContainer);
         me.player=new YT.Player(jqContainer[0], {
             height: h,
@@ -203,30 +238,23 @@ var YtPlayer=function(jqContainer,YtId,w,h,disableAutoPlay,showcontrols,showinfo
             }
         });
     }
-    
-    var listeners=[];
-    this.addEventListener=function(evt,fn){
-        listeners.push({
-            evt:evt,
-            fn:fn
-        })
-    }
-    var dispatchEvent=function(evt,param){
-        for(var i=0;i<listeners.length;i++){
-            if(listeners[i].evt==evt){
-                listeners[i].fn(param);
-            }
-        }
-    }
-    
 
-    
     build();
 }
 
 YtPlayer.Events={
+    /**
+     * on change something, it will return a YtPlayer infos as parameter
+     */
     CHANGE:"onChange",
-    VIDEO_END:"onVideoEnd"
+    /**
+     * when a video finish
+     */
+    VIDEO_END:"onVideoEnd",
+    /**
+     * tipacally fired before loading a video
+     */
+    BEFORE_START:"onBeforeStart"
 }
 YtPlayer.Status={
     VIDEO_CUED:'video-cued',

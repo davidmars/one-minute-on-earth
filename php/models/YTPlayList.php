@@ -67,10 +67,16 @@ class YTPlayList {
                 }
                 
 
+                $ns=$e->getDocNamespaces();
+                //var_dump($ns);
+                //die();
                 
-                
+                if($ns["gml"]){
+                    
                 $geo = $e->xpath("georss:where/gml:Point/gml:pos");
                 $geo = $geo[0];
+                $place = GeoPlace::getPlace($geo);
+                }
                 
                 $id=$e->xpath("media:group/yt:videoid");
                 $id=$id[0];
@@ -81,7 +87,7 @@ class YTPlayList {
                 $date=$e->xpath("yt:recorded");
                 $date=  strtotime($date[0]);
                 
-                $place = GeoPlace::getPlace($geo);
+
                 //echo "<img src='".$place->mapUrl."'>";
                 //echo $place->country . " <br> " . $place->city." <br> ".$place->feed." <br> ".$place->status."<br>".$place->localFeed;
                 

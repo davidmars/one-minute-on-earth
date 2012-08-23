@@ -42,7 +42,7 @@ var Main={
        if(!Main.player){
            Main.player=new YtPlayer($("#player"),videoId,"100%","100%",false,false,false,true);
            new PlayerControler(Main.player,$("#player-controler"));
-           Main.player.addEventListener(YtPlayer.Events.VIDEO_END,Main.nextRandom);
+           Main.player.eventDispatcher.addEventListener(YtPlayer.Events.VIDEO_END,Main.nextRandom);
        }else{
            Main.player.loadById(videoId);
        }
@@ -84,17 +84,17 @@ var PlayerControler=function(player,jq){
     
     
     player.onReady=function(){
-        console.log("on ready");
+        //console.log("on ready");
         jq.css("display","block");
         muteBtn.on("click",function(e){player.mute();})
         unMuteBtn.on("click",function(e){player.unMute();})
     }
-    Main.player.addEventListener(YtPlayer.Events.VIDEO_END,
+    player.eventDispatcher.addEventsListener([YtPlayer.Events.VIDEO_END,YtPlayer.Events.BEFORE_START],
         function(){
             setPos(0);
         }
     );
-    player.addEventListener(YtPlayer.Events.CHANGE,function(infos){
+    player.eventDispatcher.addEventListener(YtPlayer.Events.CHANGE,function(infos){
         //console.log(infos);
         //update progress
         if(!mouseIsDown && infos.state!="butffering"){
@@ -106,7 +106,6 @@ var PlayerControler=function(player,jq){
            jq.removeClass(YtPlayer.Status[s]); 
         }
         jq.addClass(infos.state);
-        
         jq.removeClass("muted"); 
         jq.addClass(infos.muted ? "muted":"");
         
@@ -115,6 +114,9 @@ var PlayerControler=function(player,jq){
 
     
     var mouseIsDown=false;
+    /**
+     * set the current position of the progress bar
+     */
     var setPos=function(zeroToOne){
         var percent=Math.round(zeroToOne*100);
         progressBar.css("width",percent+"%");
@@ -138,9 +140,11 @@ var PlayerControler=function(player,jq){
         player.seek(zeroToOne);
         setPos(zeroToOne);
     });
+    
     $("body").on("mouseup",function(e){
        mouseIsDown=false; 
     });
+    
     $("body").on("mousemove",function(e){
         if(mouseIsDown){
         var zeroToOne=Utils.rapport(
@@ -153,6 +157,8 @@ var PlayerControler=function(player,jq){
             setPos(zeroToOne);
             }
     });
+    
+    setPos(0);
 
 }
 

@@ -133,12 +133,15 @@ class GeoPlace {
               
            }
            }
+           /*
            if($place->establishment){
              $place->city= $place->city.", ".$place->establishment; 
            }elseif($place->neighborhood){
              $place->city= $place->city.", ".$place->neighborhood;  
             //$place->city.="-".$place->establishment.$place->sublocality." - ".$place->neighborhood;
            }
+            
+            */
            if($place->city==""){
                $place->city=$place->route;
            }

@@ -1,4 +1,4 @@
-<div class="m-left m-right">
+<div class="m-left m-right unselectable">
     <div class="row main-menu">
         <div class="span3 fs1 fat-btn">One Minute On Earth</div>
         <div class="span3 fs1 fat-btn" data-section-target="now-playing" data-scroll-to-section="now-playing">

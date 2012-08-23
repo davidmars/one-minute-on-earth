@@ -57,6 +57,31 @@ ScrollHandler.HTML={
 }
 
 
+ScrollHandler.scrollToY=function(y,seconds){
+    var me=this;
+    this.currentY=$("body").scrollTop();
+    if(!seconds){
+        seconds=0.5;
+    }
+    var onUpdate=function(){
+        window.scrollTo(0,me.currentY);  
+    }
+    var onComplete=function(){
+        
+    }
+    TweenMax.fromTo(me, seconds, 
+    {currentY:me.currentY}, 
+    {currentY:y,
+        onUpdate:onUpdate,
+        onComplete:onComplete
+    });
+}
+ScrollHandler.scrollToElement=function(jq,seconds){
+   ScrollHandler.scrollToY(jq.offset().top,seconds) 
+}
+
+
+
 
 
 
@@ -85,5 +110,7 @@ $("body").on("click","[data-scroll-to-section]",function(){
     var target=$(this).attr("data-scroll-to-section");
     target=$("body").find("[data-section='"+target+"']")[0];
     var pos=$(target).offset().top;
-    $("body").scrollTop(pos);
+    ScrollHandler.scrollToElement($(target), 2);
+    //$("body").scrollTo($(target), 800 );
+    //$("body").scrollTop(pos);
 });

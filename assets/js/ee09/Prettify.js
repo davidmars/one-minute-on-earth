@@ -1,4 +1,18 @@
+/**
+ *
+ */
 var Prettify={
+    /**
+    * render beautifull programming code.
+    * vkbeautify will indent the code first https://github.com/vkiryukhin/vkBeautify.
+    * google prettify will do the rest http://code.google.com/p/google-code-prettify
+    * @exemple in php use htmlentities the use a pre tag (bootstrap) prettyprint is for google.
+    * <code><br/>
+    * &lt;pre class=&quot;prettyprint lang-json linenums&quot;&gt;<br/>
+    *   &lt;?=  htmlentities($video-&gt;geoPlace-&gt;feedContent)?&gt;<br/>
+    * &lt;/pre&gt;<br/>
+    * </code>
+    */
     doTheJob:function(jq){
         var jq=$(jq);
         var nodes=jq.find(".prettyprint");
@@ -15,9 +29,8 @@ var Prettify={
                 }
                 
                 node.text(text);
-                prettyPrint();
+                prettyPrint(); //from google-code-prettify 
             }
         }       
     }
 }
-
