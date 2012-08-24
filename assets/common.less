@@ -1,0 +1,116 @@
+
+
+
+//-----------------colors---------------
+
+//background
+.bgColor(@i){
+    @value="color@{i}";
+    background-color:@@value;
+}
+.bgGreyLight(@i){
+    @value="greyLight@{i}";
+    background-color:@@value;
+}
+.bgGreyDark(@i){
+    @value="greyDark@{i}";
+    background-color:@@value;
+}
+
+
+//text
+.textColor(@i){
+    @value="color@{i}";
+    color:@@value;
+}
+.textGreyDark(@i){
+    @value="greyDark@{i}";
+    color:@@value;
+}
+.textGreyLight(@i){
+    @value="greyLight@{i}";
+    color:@@value;
+}
+
+//border
+.borderColor(@i){
+    @value="color@{i}";
+    border-color:@@value;
+}
+.borderGreyLight(@i){
+    @value="greyLight@{i}";
+    border-color:@@value; 
+}
+.borderDark(@i){
+    @value="greyDark@{i}";
+    border-color:@@value; 
+}
+
+.generateColors(@index) when (@index > 0) {
+        
+	(~".bg-color@{index}") {.bgColor(@index);}
+	(~".bg-greyLight@{index}") {.bgGreyLight(@index);}
+	(~".bg-greyDark@{index}") {.bgGreyDark(@index);}
+
+	(~".text-color@{index}") {.textColor(@index);}
+	(~".text-greyLight@{index}") {.textgreyLight(@index);}
+	(~".text-greyDark@{index}") {.textgreyDark(@index);}
+
+	(~".bd-color@{index}") {.borderColor(@index);}
+	(~".bd-greyLight@{index}") {.borderGreyLight(@index);}
+	(~".bd-greyDark@{index}") {.borderGreyDark(@index);}
+	// next iteration
+	.generateColors(@index - 1);
+}
+
+//----------------margins,paddings,height---------------
+
+.mt(@i){
+    margin-top:@i*@line;
+}
+.mb(@i){
+    margin-bottom:@i*@line;
+}
+.pt(@i){
+    padding-top:@i*@line;
+}
+.pb(@i){
+    padding-bottom:@i*@line;
+}
+.height(@i){
+    height:@i*@line;
+}
+
+.generateLines(@index) when (@index >= 0) {
+        
+	(~".mt@{index}") {.mt(@index);}
+	(~".mtNeg@{index}") {.mt(-@index);}
+        
+	(~".mb@{index}") {.mb(@index);}
+	(~".mbNeg@{index}") {.mb(-@index);}
+
+	(~".pt@{index}") {.pt(@index);}
+	(~".pb@{index}") {.pb(@index);}
+
+	(~".height@{index}") {.height(@index);}
+	(~".heightNeg@{index}") {.height(-@index);}
+	// next iteration
+	.generateLines(@index - 1);
+}
+
+
+/*-------------height properties----------*/ 
+/*padding-top, padding-bottom, margin-top, margin-bottom, height*/ 
+
+.generateLines(20);
+
+ /*-------------colors----------*/ 
+/*color background-color border-color*/
+
+.generateColors(3);
+
+
+
+
+
+
