@@ -1,5 +1,21 @@
 <div class="row">
     <div class="span8">
+        <h2>Less tests</h2>
+        
+        <div class="row">
+            <?for($i=1;$i<=8;$i++):?>
+                <?
+                $css="bg-color".$i;
+                ?>
+                <div class="span1 <?=$css?>"><?=$css?></div>
+                <hr/>
+                <?
+                $css="txt-color".$i;
+                ?>
+                <div class="span1 <?=$css?>"><?=$css?></div>
+                <hr/>
+            <?endfor?>
+        </div>
         
         <h2 class="fs0">TO DO</h2>
         

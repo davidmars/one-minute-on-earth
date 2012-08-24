@@ -2,6 +2,8 @@
 //include the stuff
 require_once("ee09/php/includes.php");
 
+
+
 //the url from .htacces
 $url=$_REQUEST["url"];
 $urlControler=new UrlControler($url);

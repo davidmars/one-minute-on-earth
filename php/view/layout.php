@@ -9,6 +9,7 @@
     <link type="text/css" rel="stylesheet" href="<?=Site::$root?>/assets/test.css"/>
     <link type="text/css" rel="stylesheet" href="<?=Site::$root?>/assets/player-controler.css"/>
     <link type="text/css" rel="stylesheet" href="<?=Site::$root?>/assets/lib/more-icons/gentleface-16-16.css"/>
+    <?=Less::getIncludeTag("assets/styles")?>
     <link href='http://fonts.googleapis.com/css?family=Rokkitt:400,700' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="<?=Site::$root?>/assets/lib/jquery-1.7.2.js"></script>
     
@@ -16,7 +17,7 @@
     
     
 </head>
-<body class="show-gridzzz">
+<body class="">
         <?=$_content?>
 </body>
 
