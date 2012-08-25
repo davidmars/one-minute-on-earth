@@ -1,4 +1,14 @@
-
+/**
+ * a quite easy way to use you tube iframe API.
+ * @param jqContainer JQuery the jquery dom object element where you want to load the player.
+ * @param YtId String the youtube video id.
+ * @param w Number witdh of the player.
+ * @param h Number height of the player.
+ * @param disableAutoPlay Bool by default its on autoplay mode so set it to false if you want it different.
+ * @param showcontrols Bool By default, we hide video controler, with it you can show it.
+ * @param showinfo Bool By default, we hide video infos, with it you can show it.
+ * @param muted Bool if you want to mute the player on load.
+ */
 var YtPlayer=function(jqContainer,YtId,w,h,disableAutoPlay,showcontrols,showinfo,muted){
     
     var autoplay=disableAutoPlay?0:1;
