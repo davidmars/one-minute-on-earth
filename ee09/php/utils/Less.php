@@ -53,10 +53,31 @@ class Less {
     public function compile ($inputFile,$outputFile){
         
         try {
-            $output=$outputFile.".css";
-            FileTools::mkDirOfFile($output);
-            self::$less->checkedCompile($inputFile.".less", $output);
-            return $output;
+            $outputFile=$outputFile.".css";
+            $inputFile=$inputFile.".less";
+            FileTools::mkDirOfFile($outputFile);
+            
+            // load the cache
+            $cacheFile = $outputFile.".cache";
+
+            if (file_exists($cacheFile)) {
+                $cache = unserialize(file_get_contents($cacheFile));
+            } else {
+                $cache = $inputFile;
+            }
+
+            $less = self::$less;
+            $newCache = $less->cachedCompile($cache);
+            if (!is_array($cache) || $newCache["updated"] > $cache["updated"]) {
+                Human::log($newCache, "Less new compilation", Human::TYPE_WARN);
+                Human::log(Site::url($outputFile, true),"Less new style sheet");
+                file_put_contents($cacheFile, serialize($newCache));
+                file_put_contents($outputFile, $newCache['compiled']);
+            }else{
+                 
+            }
+            
+            return $outputFile;
             
         } catch (exception $e) {
             echo "fatal error: " . $e->getMessage();
