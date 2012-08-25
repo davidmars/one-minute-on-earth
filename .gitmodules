@@ -1,0 +1,3 @@
+[submodule "assets/lib/bs"]
+	path = assets/lib/bs
+	url = https://github.com/davidmars/bootstrap.git
