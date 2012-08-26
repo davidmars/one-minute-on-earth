@@ -41,5 +41,3 @@ class Human {
         //unkownFunction($unkownVar);
     }
 }
-
-?>

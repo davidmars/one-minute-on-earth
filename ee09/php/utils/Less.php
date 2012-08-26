@@ -50,7 +50,7 @@ class Less {
      * @param String $outputFile the path to the css file you want as result.
      * @return String the path to the result css file
      */
-    public function compile ($inputFile,$outputFile){
+    public function compile ($inputFile,$outputFile,$variables=array()){
         
         try {
             $outputFile=$outputFile.".css";
@@ -67,9 +67,9 @@ class Less {
             }
 
             $less = self::$less;
+            $less->setVariables($variables);
             $newCache = $less->cachedCompile($cache);
             if (!is_array($cache) || $newCache["updated"] > $cache["updated"]) {
-                Human::log($newCache, "Less new compilation", Human::TYPE_WARN);
                 Human::log(Site::url($outputFile, true),"Less new style sheet");
                 file_put_contents($cacheFile, serialize($newCache));
                 file_put_contents($outputFile, $newCache['compiled']);
@@ -85,9 +85,9 @@ class Less {
         }
     }
     
-    public static function getIncludeTag($lessFile){
-        $outputFile=  self::$outputPath.$lessFile;
-        $path=Site::$root."/".self::me()->compile($lessFile, $outputFile);
+    public static function getIncludeTag($lessFile,$variables=array()){
+        $outputFile=  self::$outputPath.$lessFile."-".md5(implode("-", $variables));
+        $path=Site::$root."/".self::me()->compile($lessFile, $outputFile,$variables);
         return "<link type=\"text/css\" rel=\"stylesheet\" href=\"".$path."\"/>";
     }
 }

@@ -1,4 +1,4 @@
-<?$this->inside("layout",array("variable pour le layout"=>"yoooooo"))?>
+<?$this->inside("layout")?>
 
 <div class="left-bar">
     <?=$this->render("nav")?>
@@ -50,7 +50,7 @@
     <?if(Site::$debug):?>
     <div class="container zero">
         <div class="m-left" data-section="debug">
-            <?=$this->render("debug/debug")?> 
+            <?//=$this->render("debug/debug")?> 
         </div>
     </div>
     <?endif?>
